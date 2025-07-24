@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:latest
+    container_name: teste_ideas_hub
+    restart: unless-stopped
+    ports:
+      - "${DB_PORT}:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: teste_ideas_hub
+    volumes:
+      - pgdb:/var/lib/postgresql/data
+
+volumes:
+  pgdb:
