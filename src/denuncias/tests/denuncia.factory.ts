@@ -6,7 +6,9 @@ const DEFAULT_PROPS: DenunciaProps = {
   titulo: 'Título Exemplo',
   descricao: 'Descrição de exemplo da denúncia.',
   latitude: 0, // default latitude value
-  longitude: 0, // default longitude value
+  longitude: 0,
+  denunciante_id: DEFAULT_ID,
+  endereco_id: DEFAULT_ID,
 };
 
 export class DenunciaFactory {

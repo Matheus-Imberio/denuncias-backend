@@ -1,4 +1,4 @@
-import { enderecos as PersistentEndereco } from '@prisma/client';
+import { endereco as PersistentEndereco } from '@prisma/client';
 import { Endereco } from '../domain/endereco.entity';
 
 export type EnderecoResponse = {
@@ -19,7 +19,7 @@ export class EnderecoMapper {
       {
         logradouro: endereco.logradouro,
         numero: endereco.numero,
-        bairro: endereco.jardim,
+        bairro: endereco.bairro,
         cidade: endereco.cidade,
         estado: endereco.estado,
         cep: endereco.cep,
@@ -31,7 +31,7 @@ export class EnderecoMapper {
     return {
       logradouro: endereco.logradouro,
       numero: endereco.numero,
-      jardim: endereco.bairro!,
+      bairro: endereco.bairro!,
       cidade: endereco.cidade,
       estado: endereco.estado,
       cep: endereco.cep,

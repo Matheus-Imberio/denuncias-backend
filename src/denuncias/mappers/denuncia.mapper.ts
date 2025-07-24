@@ -1,4 +1,4 @@
-import { denuncias as PersistentDenuncia } from '@prisma/client';
+import { denuncia as PersistentDenuncia } from '@prisma/client';
 import { PickRequired } from 'src/shared/utils/types';
 import { Denuncia } from '../domain/denuncia.entity';
 
@@ -6,10 +6,7 @@ export type DenunciaResponse = PickRequired<
   Denuncia,
   'id' | 'titulo' | 'descricao'
 >;
-type NormalizedDenuncia = Omit<
-  PersistentDenuncia,
-  'id' | 'created_at' | 'denunciante_id' | 'endereco_id'
->;
+type NormalizedDenuncia = Omit<PersistentDenuncia, 'id' | 'created_at'>;
 
 export class DenunciaMapper {
   static toDomain(denuncia: PersistentDenuncia): Denuncia {
@@ -19,6 +16,8 @@ export class DenunciaMapper {
         descricao: denuncia.descricao,
         latitude: denuncia.latitude,
         longitude: denuncia.longitude,
+        denunciante_id: denuncia.denunciante_id,
+        endereco_id: denuncia.endereco_id,
       },
       denuncia.id,
     );
@@ -31,6 +30,8 @@ export class DenunciaMapper {
       updated_at: new Date(),
       latitude: denuncia.latitude,
       longitude: denuncia.longitude,
+      denunciante_id: denuncia.props.denunciante_id,
+      endereco_id: denuncia.props.endereco_id,
     };
   }
 

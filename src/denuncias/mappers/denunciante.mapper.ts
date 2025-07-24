@@ -1,4 +1,4 @@
-import { denunciantes as PersistentDenunciante } from '@prisma/client';
+import { denunciante as PersistentDenunciante } from '@prisma/client';
 import { PickRequired } from 'src/shared/utils/types';
 import { Denunciante } from '../domain/denunciante.entity';
 

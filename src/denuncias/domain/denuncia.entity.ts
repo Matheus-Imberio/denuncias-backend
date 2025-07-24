@@ -7,6 +7,8 @@ export interface DenunciaProps {
   descricao: string;
   latitude: number;
   longitude: number;
+  denunciante_id: string;
+  endereco_id: string;
 }
 
 export class Denuncia extends Entity<DenunciaProps> {
@@ -28,6 +30,14 @@ export class Denuncia extends Entity<DenunciaProps> {
 
   get longitude(): number {
     return this.props.longitude;
+  }
+
+  get denunciante_id(): string {
+    return this.props.denunciante_id;
+  }
+
+  get endereco_id(): string {
+    return this.props.endereco_id;
   }
 
   static create(
