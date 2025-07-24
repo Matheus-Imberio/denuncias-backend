@@ -5,11 +5,12 @@ import { Result, success } from 'src/@core/result.core';
 export interface DenunciaProps {
   titulo: string;
   descricao: string;
-  denunciante_id: string;
+  latitude: number;
+  longitude: number;
 }
 
 export class Denuncia extends Entity<DenunciaProps> {
-  private constructor(props: DenunciaProps, id?: string) {
+  constructor(props: DenunciaProps, id?: string) {
     super(props, id);
   }
 
@@ -21,8 +22,12 @@ export class Denuncia extends Entity<DenunciaProps> {
     return this.props.descricao;
   }
 
-  get denuncianteId(): string {
-    return this.props.denunciante_id;
+  get latitude(): number {
+    return this.props.latitude;
+  }
+
+  get longitude(): number {
+    return this.props.longitude;
   }
 
   static create(

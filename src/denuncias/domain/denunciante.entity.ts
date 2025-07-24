@@ -8,7 +8,7 @@ export interface DenuncianteProps {
 }
 
 export class Denunciante extends Entity<DenuncianteProps> {
-  private constructor(props: DenuncianteProps, id?: string) {
+  constructor(props: DenuncianteProps, id?: string) {
     super(props, id);
   }
 

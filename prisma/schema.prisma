@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -18,11 +17,14 @@ model denuncias {
   id             String        @id @default(uuid()) @db.Uuid
   titulo         String        @db.VarChar(100)
   descricao      String        @db.Text
+  latitude       Float
+  longitude      Float
   denunciante_id String        @db.Uuid
   endereco_id    String        @db.Uuid
   created_at     DateTime      @default(now()) @db.Timestamp(6)
   updated_at     DateTime      @default(now()) @db.Timestamp(6)
   denunciante    denunciantes  @relation(fields: [denunciante_id], references: [id])
+  endereco       enderecos     @relation(fields: [endereco_id], references: [id])
 }
 
 model denunciantes {
@@ -32,4 +34,18 @@ model denunciantes {
   created_at  DateTime   @default(now()) @db.Timestamp(6)
   updated_at  DateTime   @default(now()) @db.Timestamp(6)
   denuncias   denuncias[]
+}
+
+model enderecos {
+  id           String     @id @default(uuid()) @db.Uuid
+  cep          String     @db.VarChar(9)
+  logradouro   String     @db.VarChar(100)
+  numero       String     @db.VarChar(10)
+  jardim       String     @db.VarChar(50)
+  cidade       String     @db.VarChar(50)
+  estado       String     @db.VarChar(50)
+  pais         String     @default("Brasil") @db.VarChar(50)
+  created_at   DateTime   @default(now()) @db.Timestamp(6)
+  updated_at   DateTime   @default(now()) @db.Timestamp(6)
+  denuncias    denuncias[]
 }

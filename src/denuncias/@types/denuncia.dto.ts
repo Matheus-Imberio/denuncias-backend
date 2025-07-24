@@ -1,8 +1,8 @@
 import { createZodDto } from 'nestjs-zod';
 
 import {
-    createValidator,
-    partialSchema,
+  createValidator,
+  partialSchema,
 } from 'src/shared/utils/validation/zod';
 
 import { z } from 'zod';

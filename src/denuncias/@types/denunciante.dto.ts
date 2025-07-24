@@ -1,8 +1,8 @@
 import { createZodDto } from 'nestjs-zod';
 
 import {
-    createValidator,
-    partialSchema,
+  createValidator,
+  partialSchema,
 } from 'src/shared/utils/validation/zod';
 
 import { z } from 'zod';
@@ -15,7 +15,9 @@ const DenuncianteSchema = z.object({
 export const PartialDenuncianteSchema = partialSchema(DenuncianteSchema);
 
 export class DenuncianteDTO extends createZodDto(DenuncianteSchema) {}
-export class PartialDenuncianteDTO extends createZodDto(PartialDenuncianteSchema) {}
+export class PartialDenuncianteDTO extends createZodDto(
+  PartialDenuncianteSchema,
+) {}
 
 export const DenuncianteValidator = createValidator(
   (data) => DenuncianteSchema.parse(data),
