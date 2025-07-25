@@ -5,6 +5,10 @@ export type ExpectedResponse<R, E extends ErrorSchema = HttpError> = Promise<
   Result<R, E>
 >;
 
-export abstract class UseCase {
-  abstract execute(...args: unknown[]): ExpectedResponse<unknown, ErrorSchema>;
+export interface UseCase<
+  Input = unknown,
+  Output = unknown,
+  E extends ErrorSchema = HttpError
+> {
+  execute(input: Input): ExpectedResponse<Output, E>;
 }

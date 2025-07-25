@@ -10,7 +10,10 @@ import { z } from 'zod';
 const DenunciaSchema = z.object({
   titulo: z.string().nonempty().max(200),
   descricao: z.string().nonempty(),
-  denunciante_id: z.string().nonempty(),
+  latitude: z.number(),
+  longitude: z.number(),
+  denunciante: z.optional(z.any()),
+  endereco: z.optional(z.any()),
 });
 
 export const PartialDenunciaSchema = partialSchema(DenunciaSchema);

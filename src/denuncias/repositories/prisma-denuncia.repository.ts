@@ -12,7 +12,10 @@ export class PrismaDenunciaRepository implements DenunciaRepository {
     const data = DenunciaMapper.toPersist(denuncia);
 
     return ResultAsync.fromPromiseHttp(
-      this.prismaService.denuncia.create({ data }),
+      this.prismaService.denuncia.create({
+        data,
+        include: { endereco: true, denunciante: true },
+      }),
     ).map((created) => DenunciaMapper.toDomain(created));
   }
 
@@ -23,21 +26,17 @@ export class PrismaDenunciaRepository implements DenunciaRepository {
       this.prismaService.denuncia.update({
         where: { id: denuncia.id },
         data,
+        include: { endereco: true, denunciante: true },
       }),
     ).map((updated) => DenunciaMapper.toDomain(updated));
   }
 
-  findAll() {
-    return ResultAsync.fromPromiseHttp(
-      this.prismaService.denuncia.findMany(),
-    ).map((denuncias) =>
-      denuncias.map((denuncia) => DenunciaMapper.toDomain(denuncia)),
-    );
-  }
-
   findOne(id: string) {
     return ResultAsync.fromPromiseHttp(
-      this.prismaService.denuncia.findUnique({ where: { id } }),
+      this.prismaService.denuncia.findUnique({
+        where: { id },
+        include: { endereco: true, denunciante: true },
+      }),
     ).andThen((denuncia) => {
       if (!denuncia) {
         return fail(new HttpError('Denuncia not found', 404));
@@ -45,6 +44,16 @@ export class PrismaDenunciaRepository implements DenunciaRepository {
 
       return success(DenunciaMapper.toDomain(denuncia));
     });
+  }
+
+  findAll() {
+    return ResultAsync.fromPromiseHttp(
+      this.prismaService.denuncia.findMany({
+        include: { endereco: true, denunciante: true },
+      }),
+    ).map((denuncias) =>
+      denuncias.map((denuncia) => DenunciaMapper.toDomain(denuncia)),
+    );
   }
 
   remove(id: string) {

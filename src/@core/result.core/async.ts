@@ -1,5 +1,5 @@
 import { HttpError } from '../error.core';
-import { success, fail, Result } from './utils';
+import { fail, Result, success } from './utils';
 
 export class ResultAsync<S, E> {
   readonly data: Promise<Result<S, E>>;
@@ -8,6 +8,9 @@ export class ResultAsync<S, E> {
     this.data = data;
   }
 
+  static fromResult<T, E>(result: Result<T, E>): ResultAsync<T, E> {
+    return new ResultAsync(Promise.resolve(result));
+  }
   static fromSafePromise<T, E = never>(promise: Promise<T>): ResultAsync<T, E> {
     const newPromise = promise.then((value: T) => success<T, E>(value));
     return new ResultAsync(newPromise);

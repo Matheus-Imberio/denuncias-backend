@@ -1,14 +1,16 @@
 import { Entity } from 'src/@core/entity.core';
 import { HttpError } from 'src/@core/error.core';
 import { Result, success } from 'src/@core/result.core';
+import { Denunciante } from './denunciante.entity';
+import { Endereco } from './endereco.entity';
 
 export interface DenunciaProps {
   titulo: string;
   descricao: string;
   latitude: number;
   longitude: number;
-  denunciante_id: string;
-  endereco_id: string;
+  denunciante?: Denunciante;
+  endereco?: Endereco;
 }
 
 export class Denuncia extends Entity<DenunciaProps> {
@@ -32,12 +34,12 @@ export class Denuncia extends Entity<DenunciaProps> {
     return this.props.longitude;
   }
 
-  get denunciante_id(): string {
-    return this.props.denunciante_id;
+  get denunciante(): Denunciante | undefined {
+    return this.props.denunciante;
   }
 
-  get endereco_id(): string {
-    return this.props.endereco_id;
+  get endereco(): Endereco | undefined {
+    return this.props.endereco;
   }
 
   static create(
