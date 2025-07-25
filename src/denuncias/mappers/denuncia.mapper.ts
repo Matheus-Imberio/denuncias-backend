@@ -1,5 +1,4 @@
 import { Prisma } from '@prisma/client';
-import { PickRequired } from 'src/shared/utils/types';
 import { Denuncia } from '../domain/denuncia.entity';
 import { Denunciante } from '../domain/denunciante.entity';
 import { Endereco } from '../domain/endereco.entity';
@@ -11,10 +10,28 @@ type PersistentDenuncia = Prisma.denunciaGetPayload<{
   };
 }>;
 
-export type DenunciaResponse = PickRequired<
-  Denuncia,
-  'id' | 'titulo' | 'descricao'
->;
+export type DenunciaResponse = {
+  id: string;
+  titulo: string;
+  descricao: string;
+  latitude: number;
+  longitude: number;
+  denunciante: {
+    id: string;
+    nome: string;
+    cpf: string;
+  };
+  endereco: {
+    id: string;
+    logradouro: string;
+    numero: string;
+    bairro: string;
+    cidade: string;
+    estado: string;
+    cep: string;
+    pais: string;
+  };
+};
 type NormalizedDenuncia = Omit<
   PersistentDenuncia,
   'id' | 'created_at' | 'endereco' | 'denunciante'
@@ -73,10 +90,33 @@ export class DenunciaMapper {
   }
 
   static toResponse(denuncia: Denuncia): DenunciaResponse {
+    if (!denuncia.denunciante) {
+      throw new Error('Denunciante is required in DenunciaResponse');
+    }
+    if (!denuncia.endereco) {
+      throw new Error('Endereco is required in DenunciaResponse');
+    }
     return {
       id: denuncia.id!,
       titulo: denuncia.titulo,
       descricao: denuncia.descricao,
+      denunciante: {
+        id: denuncia.denunciante.id!,
+        nome: denuncia.denunciante.nome,
+        cpf: denuncia.denunciante.cpf,
+      },
+      endereco: {
+        id: denuncia.endereco.id!,
+        logradouro: denuncia.endereco.logradouro,
+        numero: denuncia.endereco.numero,
+        bairro: denuncia.endereco.bairro!,
+        cidade: denuncia.endereco.cidade,
+        estado: denuncia.endereco.estado,
+        cep: denuncia.endereco.cep,
+        pais: denuncia.endereco.pais!,
+      },
+      latitude: denuncia.latitude,
+      longitude: denuncia.longitude,
     };
   }
 }

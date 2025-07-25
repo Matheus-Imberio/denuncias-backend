@@ -10,7 +10,7 @@ export abstract class Entity<T> {
 
   constructor(props: T, id?: string) {
     if (id !== undefined && id !== null && !UUID.validate(id)) {
-      throw new Error(`The provided id "${id}" is not a valid UUID v7.`);
+      throw new Error(`The provided id "${id}" is not a valid UUID.`);
     }
     this._id = id;
     this.props = props;

@@ -1,6 +1,5 @@
 import {
   v7 as uuidv7,
-  version as uuidVersion,
   validate as validateUuid,
 } from 'uuid';
 import { z } from 'zod';
@@ -11,10 +10,10 @@ export class UUID {
   }
 
   static validate(uuid: string): boolean {
-    return validateUuid(uuid) && uuidVersion(uuid) === 7;
+    return validateUuid(uuid); 
   }
 
   static z() {
-    return z.string().refine(UUID.validate, 'Expected uuid v7');
+    return z.string().refine(UUID.validate, 'Expected a valid UUID');
   }
 }

@@ -1,4 +1,4 @@
-import { success } from 'src/@core/result.core';
+import { ResultAsync, success } from 'src/@core/result.core';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { Denunciante } from '../domain/denunciante.entity';
 import { Endereco } from '../domain/endereco.entity';
@@ -25,7 +25,9 @@ describe('UpdateDenunciaUseCase', () => {
     };
 
     mockDenuncianteRepository = {
-      findOne: vi.fn().mockResolvedValue(success(null)),
+      findOne: vi
+        .fn()
+        .mockReturnValue(ResultAsync.fromResult(success(denunciaValida))),
       create: vi.fn().mockImplementation((d) => success(new Denunciante(d))),
     };
 
