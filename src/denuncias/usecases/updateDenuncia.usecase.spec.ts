@@ -1,5 +1,6 @@
 import { success } from 'src/@core/result.core';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { UUID } from 'src/shared/utils/uuid';
 import { Denuncia } from '../domain/denuncia.entity';
 import { Denunciante } from '../domain/denunciante.entity';
 import { Endereco } from '../domain/endereco.entity';
@@ -11,8 +12,11 @@ describe('UpdateDenunciaUseCase', () => {
   let mockDenuncianteRepository: any;
   let mockEnderecoRepository: any;
   let mockGeolocalizacaoService: any;
+  let validUuid: string;
 
   beforeEach(() => {
+    // Gera um UUID válido para os testes
+    validUuid = UUID.create();
     // Mocks com implementações padrão (usando vi do Vitest)
     mockDenunciaRepository = {
       findById: vi.fn().mockResolvedValue(
@@ -35,7 +39,7 @@ describe('UpdateDenunciaUseCase', () => {
                 estado: 'Estado Original',
               }),
             },
-            '123',
+            validUuid,
           ),
         ),
       ),
@@ -77,7 +81,7 @@ describe('UpdateDenunciaUseCase', () => {
   describe('execute', () => {
     it('deve atualizar uma denúncia existente com sucesso', async () => {
       const request = {
-        id: '123',
+        id: validUuid,
         data: {
           titulo: 'Novo Título',
           descricao: 'Nova Descrição',
@@ -97,7 +101,7 @@ describe('UpdateDenunciaUseCase', () => {
       mockDenunciaRepository.findById.mockResolvedValueOnce(success(null));
 
       const request = {
-        id: '999',
+        id: UUID.create(), // Usa um UUID diferente para simular denúncia não encontrada
         data: { titulo: 'Novo Título' },
       };
 
@@ -111,7 +115,7 @@ describe('UpdateDenunciaUseCase', () => {
 
     it('deve manter valores originais quando não fornecidos', async () => {
       const request = {
-        id: '123',
+        id: validUuid,
         data: {
           descricao: 'Nova Descrição',
           // Não fornece título
