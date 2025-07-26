@@ -89,7 +89,6 @@ describe('[unit] CreateDenunciaUseCase > deve criar uma denúncia com sucesso', 
     };
 
     const result = await useCase.execute(request);
-
     expect(result.wasSuccess()).toBe(true);
     expect(result.data).toEqual(DenunciaMapper.toResponse(denuncia));
   });

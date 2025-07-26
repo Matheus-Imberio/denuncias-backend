@@ -41,16 +41,16 @@ export class CreateDenunciaUseCase
     if (denuncianteResult.wasFailure()) {
       return fail(denuncianteResult.data);
     }
-
+    console.log(validatedData);
     const enderecoResult = await this.processEndereco(
       validatedData.endereco && typeof validatedData.endereco === 'object'
         ? (validatedData.endereco as { id?: string }).id
         : undefined,
       validatedData.endereco && typeof validatedData.endereco === 'object'
-        ? (validatedData.endereco as { latitude?: number }).latitude
+        ? validatedData.latitude
         : undefined,
       validatedData.endereco && typeof validatedData.endereco === 'object'
-        ? (validatedData.endereco as { longitude?: number }).longitude
+        ? validatedData.longitude
         : undefined,
     ).result();
 
@@ -79,7 +79,7 @@ export class CreateDenunciaUseCase
   private processDenunciante(
     denuncianteData: DenuncianteDTO,
   ): ResultAsync<Denunciante, HttpError> {
-    const identifier = denuncianteData.cpf;
+    const identifier = denuncianteData.id;
     if (!identifier) {
       return ResultAsync.fromResult(
         fail(new HttpError('Identificador do denunciante não informado', 400)),
@@ -107,26 +107,28 @@ export class CreateDenunciaUseCase
     latitude?: number,
     longitude?: number,
   ): ResultAsync<Endereco, HttpError> {
+    console.log(enderecoId);
     if (enderecoId) {
-      return this.enderecoRepository.findOne(enderecoId).andThen((existing) => {
-        if (existing) {
-          return ResultAsync.fromResult(success(existing));
-        }
-
-        if (latitude !== undefined && longitude !== undefined) {
-          return this.geolocalizacaoService
-            .buscarEndereco(latitude, longitude)
-
-            .andThen((endereco) => this.enderecoRepository.create(endereco));
-        }
-
-        return ResultAsync.fromResult(
-          fail(new HttpError('Endereço não encontrado', 404)),
-        );
-      });
+      const existing = this.enderecoRepository.findOne(enderecoId)?.data;
+      if (!existing) {
+        console.log(existing);
+        return existing;
+      }
+      console.log(latitude);
+      console.log(longitude);
+      if (latitude !== undefined && longitude !== undefined) {
+        return this.geolocalizacaoService
+          .buscarEndereco(latitude, longitude)
+          .andThen((novoEndereco) =>
+            this.enderecoRepository.create(novoEndereco),
+          );
+      }
     }
 
+    console.debug('Buscando endereço1...');
+    console.log(this.geolocalizacaoService);
     if (latitude !== undefined && longitude !== undefined) {
+      console.debug('Buscando endereço2...');
       return this.geolocalizacaoService
         .buscarEndereco(latitude, longitude)
         .andThen((endereco) => this.enderecoRepository.create(endereco));

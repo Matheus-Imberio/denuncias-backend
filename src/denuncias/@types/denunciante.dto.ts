@@ -8,6 +8,7 @@ import {
 import { z } from 'zod';
 
 const DenuncianteSchema = z.object({
+  id: z.string().optional(),
   nome: z.string().nonempty().max(100),
   cpf: z.string().nonempty().length(11),
 });

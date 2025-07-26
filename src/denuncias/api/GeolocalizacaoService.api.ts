@@ -14,6 +14,9 @@ interface ApiResponse {
       village?: string;
       state?: string;
       country_code?: string;
+      suburb?: string;
+      neighbourhood?: string;
+      city_district?: string;
     };
   }>;
 }
@@ -44,12 +47,14 @@ export class GeolocalizacaoService {
         cep: components.postcode ?? '00000000',
         logradouro: components.road ?? components.street ?? 'Desconhecida',
         numero: 'S/N',
-        cidade:
-          components.city ??
-          components.town ??
-          components.village ??
-          'Desconhecida',
+        cidade: components.city ?? components.town ?? 'Desconhecida',
         estado: components.state ?? 'Desconhecido',
+        bairro:
+          components.suburb ??
+          components.neighbourhood ??
+          components.city_district ??
+          components.village ??
+          'Desconhecido',
         pais: components.country_code?.toUpperCase() ?? 'BR',
       };
 

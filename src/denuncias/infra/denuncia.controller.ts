@@ -61,10 +61,12 @@ export class DenunciaController {
   @DocumentMethod(UpdateDenunciaDocumentationObject)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() dto: PartialDenunciaDTO) {
-    return matchHttps(
-      await this.updateDenunciaUseCase.execute({ id, data: dto }),
-      HttpStatus.OK,
-    );
+    const result = await this.updateDenunciaUseCase.execute({
+      id,
+      data: dto,
+    });
+
+    return matchHttps(result, HttpStatus.OK);
   }
   @DocumentMethod(DeleteDenunciaDocumentationObject)
   @Delete(':id')
