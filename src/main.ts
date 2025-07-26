@@ -7,7 +7,7 @@ async function bootstrap() {
 
   // Configuração do Swagger
   const config = new DocumentBuilder()
-    .setTitle('Minha API')
+    .setTitle('Denuncias')
     .setDescription('Documentação da API com Swagger')
     .setVersion('1.0')
     .build();
