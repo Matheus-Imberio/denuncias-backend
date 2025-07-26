@@ -69,6 +69,62 @@ http://localhost:3000
 
 ---
 
+# ✅ Como Enviar o Corpo para o Endpoint de Update/Create de Denúncia
+
+Para que a requisição funcione corretamente na API, envie um JSON no seguinte formato (tanto para criação quanto para atualização de denúncia):
+
+### 📦 Exemplo de Corpo (JSON)
+
+```json
+{
+  "titulo": "Teste",
+  "descricao": "ola",
+  "latitude": -23.556857,
+  "longitude": -46.660065,
+  "denunciante": {
+    "id": "018f52a0-e264-7e28-b43c-a3b77b5b0e67"
+  },
+  "endereco": {}
+}
+```
+
+---
+
+✅ O campo `denunciante.id` **deve existir previamente** no banco de dados. Para isso, siga o passo abaixo:
+
+---
+
+### 🛠️ Criando um Denunciante com Prisma Studio
+
+1. Rode o Prisma Studio:
+
+```bash
+pnpm prisma studio
+```
+
+2. No navegador, clique na tabela **Denunciante**.
+
+3. Crie um novo denunciante com os seguintes campos:
+
+- **id**: Deixe em branco (será gerado automaticamente, copie o valor gerado depois).
+- **nome** (se existir): Preencha.
+- **cpf** (se existir): Preencha corretamente com um CPF válido.
+
+4. Copie o `id` gerado e use no corpo da denúncia como:
+
+```json
+"denunciante": {
+  "id": "COLE_O_ID_AQUI"
+}
+```
+
+---
+
+⚠️ Sem um denunciante válido com `id` existente, a denúncia será rejeitada com erro `400 - Dados inválidos`.
+
+---
+
+
 ## 📄 Documentação da API (Swagger)
 
 Acesse a documentação interativa da API após iniciar o servidor:
@@ -107,14 +163,6 @@ docker-compose.yml
 ## 📬 Contato
 
 Feito com 💻 por [Matheus Henrique Imberio](https://www.linkedin.com/in/matheusimberio)
-
----
-
-## 📌 Melhorias Futuras
-
-- [ ] Autenticação com JWT
-- [ ] CI/CD com GitHub Actions
-- [ ] Deploy com Docker + Render ou Railway
 
 ---
 
